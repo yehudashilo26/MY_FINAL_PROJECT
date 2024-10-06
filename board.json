@@ -1,0 +1,377 @@
+{
+  "tiles": [
+    {
+      "id": 1,
+      "name": "Go",
+      "type": "go",
+      "description": "Collect $200 as you pass"
+    },
+    {
+      "id": 2,
+      "name": "Tel-Aviv",
+      "type": "property",
+      "price": 60,
+      "rent": 4,
+      "house_rent": 20,
+      "hotel_rent": 350,
+      "house_cost": 30,  
+      "group": 1
+    },
+    {
+      "id": 3,
+      "name": "Community Chest",
+      "type": "community_chest",
+      "description": "Draw a community chest card",
+      "image": ":/Menu/res/communityChest.png"
+    },
+    {
+      "id": 4,
+      "name": "Ramat Gan",
+      "type": "property",
+      "price": 60,
+      "rent": 2,
+      "house_rent": 10,
+      "hotel_rent": 300,
+      "house_cost": 30,  
+      "group": 1
+    },
+    {
+      "id": 5,
+      "name": "Income Tax",
+      "type": "tax",
+      "price": 200,
+      "description": "Pay 10% or $200 in taxes"
+    },
+    {
+      "id": 6,
+      "name": "Ashdod Railroad",
+      "type": "railroad",
+      "price": 200,
+      "rent": 50,
+      "image": ":/Menu/res/trainhead.png"
+    },
+    {
+      "id": 7,
+      "name": "Beer Sheva",
+      "type": "property",
+      "price": 100,
+      "rent": 6,
+      "house_rent": 30,
+      "hotel_rent": 500,
+      "house_cost": 50,  
+      "group": 2
+    },
+    {
+      "id": 8,
+      "name": "Chance",
+      "type": "chance",
+      "description": "Draw a chance card",
+      "image": ":/Menu/res/chance.png"
+    },
+    {
+      "id": 9,
+      "name": "Dimona",
+      "type": "property",
+      "price": 100,
+      "rent": 6,
+      "house_rent": 30,
+      "hotel_rent": 500,
+      "house_cost": 50,  
+      "group": 2
+    },
+    {
+      "id": 10,
+      "name": "Ashkelon",
+      "type": "property",
+      "price": 120,
+      "rent": 8,
+      "house_rent": 40,
+      "hotel_rent": 550,
+      "house_cost": 60,  
+      "group": 2
+    },
+    {
+      "id": 11,
+      "name": "Jail / Just Visiting",
+      "type": "jail",
+      "description": "In Jail or just visiting",
+      "image": ":/Menu/res/jail.png"
+    },
+    {
+      "id": 12,
+      "name": "Haifa",
+      "type": "property",
+      "price": 140,
+      "rent": 10,
+      "house_rent": 50,
+      "hotel_rent": 650,
+      "house_cost": 70,  
+      "group": 3
+    },
+    {
+      "id": 13,
+      "name": "Electric Company",
+      "type": "utility",
+      "price": 150,
+      "description": "Utility Company, players landing on it pay owner based on dice roll",
+      "image": ":/Menu/res/electricCompany.png"
+    },
+    {
+      "id": 14,
+      "name": "Nahariya",
+      "type": "property",
+      "price": 140,
+      "rent": 10,
+      "house_rent": 50,
+      "hotel_rent": 650,
+      "house_cost": 70,  
+      "group": 3
+    },
+    {
+      "id": 15,
+      "name": "Ako",
+      "type": "property",
+      "price": 160,
+      "rent": 12,
+      "house_rent": 60,
+      "hotel_rent": 750,
+      "house_cost": 80,  
+      "group": 3
+    },
+    {
+      "id": 16,
+      "name": "Jerusalem Railroad",
+      "type": "railroad",
+      "price": 200,
+      "rent": 50,
+      "image": ":/Menu/res/trainhead.png"
+    },
+    {
+      "id": 17,
+      "name": "Kisaria",
+      "type": "property",
+      "price": 180,
+      "rent": 14,
+      "house_rent": 70,
+      "hotel_rent": 820,
+      "house_cost": 90,  
+      "group": 4
+    },
+    {
+      "id": 18,
+      "name": "Community Chest",
+      "type": "community_chest",
+      "description": "Draw a community chest card",
+      "image": ":/Menu/res/communityChest.png"
+    },
+    {
+      "id": 19,
+      "name": "Netanya",
+      "type": "property",
+      "price": 180,
+      "rent": 14,
+      "house_rent": 70,
+      "hotel_rent": 820,
+      "house_cost": 90,  
+      "group": 4
+    },
+    {
+      "id": 20,
+      "name": "Sdot Yam",
+      "type": "property",
+      "price": 200,
+      "rent": 16,
+      "house_rent": 80,
+      "hotel_rent": 900,
+      "house_cost": 100,  
+      "group": 4
+    },
+    {
+      "id": 21,
+      "name": "Free Parking",
+      "type": "free_parking",
+      "description": "No penalty or reward"
+    },
+    {
+      "id": 22,
+      "name": "Petah Tikwa",
+      "type": "property",
+      "price": 220,
+      "rent": 18,
+      "house_rent": 90,
+      "hotel_rent": 950,
+      "house_cost": 110,  
+      "group": 5
+    },
+    {
+      "id": 23,
+      "name": "Chance",
+      "type": "chance",
+      "description": "Draw a chance card",
+      "image": ":/Menu/res/chance.png"
+    },
+    {
+      "id": 24,
+      "name": "Kfar Saba",
+      "type": "property",
+      "price": 220,
+      "rent": 18,
+      "house_rent": 90,
+      "hotel_rent": 950,
+      "house_cost": 110,  
+      "group": 5
+    },
+    {
+      "id": 25,
+      "name": "Rosh Haayin",
+      "type": "property",
+      "price": 240,
+      "rent": 20,
+      "house_rent": 100,
+      "hotel_rent": 1050,
+      "house_cost": 120,  
+      "group": 5
+    },
+    {
+      "id": 26,
+      "name": "Bat-Yam Railroad",
+      "type": "railroad",
+      "price": 200,
+      "rent": 50,
+      "image": ":/Menu/res/trainhead.png"
+    },
+    {
+      "id": 27,
+      "name": "Holon",
+      "type": "property",
+      "price": 260,
+      "rent": 22,
+      "house_rent": 110,
+      "hotel_rent": 1100,
+      "house_cost": 130,  
+      "group": 6
+    },
+    {
+      "id": 28,
+      "name": "Mazor",
+      "type": "property",
+      "price": 260,
+      "rent": 22,
+      "house_rent": 110,
+      "hotel_rent": 1100,
+      "house_cost": 130,  
+      "group": 6
+    },
+    {
+      "id": 29,
+      "name": "Water Company",
+      "type": "utility",
+      "price": 150,
+      "description": "Utility Company, players landing on it pay based on dice roll",
+      "image": ":/Menu/res/wateCompany.png"
+    },
+    {
+      "id": 30,
+      "name": "Bet Nehemiya",
+      "type": "property",
+      "price": 280,
+      "rent": 24,
+      "house_rent": 120,
+      "hotel_rent": 1150,
+      "house_cost": 140,  
+      "group": 6
+    },
+    {
+      "id": 31,
+      "name": "Go to Jail",
+      "type": "go_to_jail",
+      "description": "Go directly to jail",
+      "image": ":/Menu/res/goToJail.png"
+    },
+    {
+      "id": 32,
+      "name": "Jerusalem",
+      "type": "property",
+      "price": 300,
+      "rent": 26,
+      "house_rent": 130,
+      "hotel_rent": 1220,
+      "house_cost": 150,  
+      "group": 7
+    },
+    {
+      "id": 33,
+      "name": "Community Chest",
+      "type": "community_chest",
+      "description": "Draw a community chest card",
+      "image": ":/Menu/res/communityChest.png"
+    },
+    {
+      "id": 34,
+      "name": "Tveria",
+      "type": "property",
+      "price": 300,
+      "rent": 26,
+      "house_rent": 130,
+      "hotel_rent": 1220,
+      "house_cost": 150,  
+      "group": 7
+    },
+    {
+      "id": 35,
+      "name": "Eilat",
+      "type": "property",
+      "price": 320,
+      "rent": 28,
+      "house_rent": 140,
+      "hotel_rent": 1300,
+      "house_cost": 160,  
+      "group": 7
+    },
+    {
+      "id": 36,
+      "name": "Modi'in Railroad",
+      "type": "railroad",
+      "price": 200,
+      "rent": 50,
+      "image": ":/Menu/res/trainhead.png"
+    },
+    {
+      "id": 37,
+      "name": "Chance",
+      "type": "chance",
+      "description": "Draw a chance card",
+      "image": ":/Menu/res/chance.png"
+    },
+    {
+      "id": 38,
+      "name": "Rehavia",
+      "type": "property",
+      "price": 350,
+      "rent": 35,
+      "house_rent": 175,
+      "hotel_rent": 1500,
+      "house_cost": 175,  
+      "group": 8
+    },
+    {
+      "id": 39,
+      "name": "Luxury Tax",
+      "type": "luxury_tax",
+      "price": 100,
+      "description": "Pay $100",
+      "image": ":/Menu/res/Tax.png"
+    },
+    {
+      "id": 40,
+      "name": "Ariel",
+      "type": "property",
+      "price": 400,
+      "rent": 50,
+      "house_rent": 200,
+      "hotel_rent": 2000,
+      "house_cost": 200,  
+      "group": 8
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>res/chance.png</file>
+        <file>res/community_chest.png</file>
+        <file>res/electric_company.png</file>
+        <file>res/go_to_jail.png</file>
+        <file>res/jail.png</file>
+        <file>res/monopoly_logo.png</file>
+        <file>res/luxury_tax.png</file>
+        <file>res/railroad.png</file>
+        <file>res/water_company.png</file>
+        <file>res/free_parking.png</file>
+        <file>res/property.png</file>
+        <file>res/go.png</file>
+    </qresource>
+    <qresource prefix="/players_tokens">
+        <file>res/Token1.jpg</file>
+        <file>res/Token2.jpg</file>
+        <file>res/Token3.jpg</file>
+        <file>res/Token4.jpg</file>
+        <file>res/Token5.jpg</file>
+        <file>res/Token6.jpg</file>
+        <file>res/Token7.jpg</file>
+        <file>res/Token0.jpg</file>
+    </qresource>
+</RCC>

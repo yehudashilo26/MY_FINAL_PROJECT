@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>BoardWidget</class>
+ <widget class="QWidget" name="BoardWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>979</width>
+    <height>523</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <layout class="QGridLayout" name="board">
+     <property name="sizeConstraint">
+      <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+     </property>
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <item row="0" column="9">
+      <widget class="QWidget" name="tile_10" native="true"/>
+     </item>
+     <item row="0" column="4">
+      <widget class="QWidget" name="tile_5" native="true"/>
+     </item>
+     <item row="1" column="10">
+      <widget class="QWidget" name="tile_12" native="true"/>
+     </item>
+     <item row="2" column="10">
+      <widget class="QWidget" name="tile_13" native="true"/>
+     </item>
+     <item row="0" column="7">
+      <widget class="QWidget" name="tile_8" native="true"/>
+     </item>
+     <item row="4" column="10">
+      <widget class="QWidget" name="tile_15" native="true"/>
+     </item>
+     <item row="7" column="10">
+      <widget class="QWidget" name="tile_18" native="true"/>
+     </item>
+     <item row="0" column="8">
+      <widget class="QWidget" name="tile_9" native="true"/>
+     </item>
+     <item row="0" column="5">
+      <widget class="QWidget" name="tile_6" native="true"/>
+     </item>
+     <item row="9" column="10">
+      <widget class="QWidget" name="tile_20" native="true"/>
+     </item>
+     <item row="0" column="10">
+      <widget class="QWidget" name="tile_11" native="true"/>
+     </item>
+     <item row="8" column="10">
+      <widget class="QWidget" name="tile_19" native="true"/>
+     </item>
+     <item row="0" column="0">
+      <widget class="QWidget" name="tile" native="true"/>
+     </item>
+     <item row="0" column="1">
+      <widget class="QWidget" name="tile_2" native="true"/>
+     </item>
+     <item row="6" column="10">
+      <widget class="QWidget" name="tile_17" native="true"/>
+     </item>
+     <item row="0" column="2">
+      <widget class="QWidget" name="tile_3" native="true"/>
+     </item>
+     <item row="0" column="3">
+      <widget class="QWidget" name="tile_4" native="true"/>
+     </item>
+     <item row="5" column="10">
+      <widget class="QWidget" name="tile_16" native="true"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QWidget" name="tile_40" native="true"/>
+     </item>
+     <item row="3" column="10">
+      <widget class="QWidget" name="tile_14" native="true"/>
+     </item>
+     <item row="0" column="6">
+      <widget class="QWidget" name="tile_7" native="true"/>
+     </item>
+     <item row="10" column="10">
+      <widget class="QWidget" name="tile_21" native="true"/>
+     </item>
+     <item row="10" column="9">
+      <widget class="QWidget" name="tile_22" native="true">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="8">
+      <widget class="QWidget" name="tile_23" native="true"/>
+     </item>
+     <item row="10" column="7">
+      <widget class="QWidget" name="tile_24" native="true"/>
+     </item>
+     <item row="10" column="6">
+      <widget class="QWidget" name="tile_25" native="true"/>
+     </item>
+     <item row="10" column="5">
+      <widget class="QWidget" name="tile_26" native="true"/>
+     </item>
+     <item row="10" column="4">
+      <widget class="QWidget" name="tile_27" native="true"/>
+     </item>
+     <item row="10" column="3">
+      <widget class="QWidget" name="tile_28" native="true"/>
+     </item>
+     <item row="10" column="2">
+      <widget class="QWidget" name="tile_29" native="true"/>
+     </item>
+     <item row="10" column="1">
+      <widget class="QWidget" name="tile_30" native="true"/>
+     </item>
+     <item row="10" column="0">
+      <widget class="QWidget" name="tile_31" native="true"/>
+     </item>
+     <item row="9" column="0">
+      <widget class="QWidget" name="tile_32" native="true"/>
+     </item>
+     <item row="8" column="0">
+      <widget class="QWidget" name="tile_33" native="true"/>
+     </item>
+     <item row="7" column="0">
+      <widget class="QWidget" name="tile_34" native="true"/>
+     </item>
+     <item row="6" column="0">
+      <widget class="QWidget" name="tile_35" native="true"/>
+     </item>
+     <item row="5" column="0">
+      <widget class="QWidget" name="tile_36" native="true"/>
+     </item>
+     <item row="4" column="0">
+      <widget class="QWidget" name="tile_37" native="true"/>
+     </item>
+     <item row="3" column="0">
+      <widget class="QWidget" name="tile_38" native="true"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="QWidget" name="tile_39" native="true"/>
+     </item>
+     <item row="1" column="1" rowspan="9" colspan="9">
+      <widget class="QLabel" name="image">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap resource="resources.qrc">:/images/res/monopoly_logo.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>
