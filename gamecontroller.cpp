@@ -105,6 +105,16 @@ void GameController::onNotify(const Event &event) {
         // Handle PlayerPositionChanged
         break;
 
+    case EventType::PlayerPaidRent:{
+        // Perform dynamic_cast and check if it succeeds
+        const PlayerPaidRentEvent* paidRentEvent = dynamic_cast<const PlayerPaidRentEvent*>(&event);
+        if (paidRentEvent) {
+            gui->addBoardMessage("Player " + paidRentEvent->player.getName() +
+                                 " paid rent of " + std::to_string(paidRentEvent->amount) +
+                                 " to " + paidRentEvent->owner.getName());
+        }
+        break;
+    }
     case EventType::PlayerRolledDice: {
         // Perform dynamic_cast and check if it succeeds
         const PlayerRolledDiceEvent* rolledDiceEvent = dynamic_cast<const PlayerRolledDiceEvent*>(&event);
@@ -126,8 +136,22 @@ void GameController::onNotify(const Event &event) {
         break;
     }
     case EventType::PlayerIsOutOfJailEvent:
-    case EventType::PlayerRolledDoubles:
-    case EventType::PlayerBoughtProperty:
+        
+    case EventType::PlayerRolledDoubles:{
+        const PlayerRolledDoublesEvent* rolledDoublesEvent = dynamic_cast<const PlayerRolledDoublesEvent*>(&event);
+        if (rolledDoublesEvent){
+            gui->addBoardMessage("Player " + rolledDoublesEvent->player.getName() + " rolled doubles " + std::to_string(rolledDoublesEvent->dice1) + " and " + std::to_string(rolledDoublesEvent->dice2) + " and gets another turn");
+        }
+        break;
+    }
+    case EventType::PlayerBoughtProperty:{
+        const PlayerBoughtPropertyEvent* boughtPropertyEvent = dynamic_cast<const PlayerBoughtPropertyEvent*>(&event);
+        if (boughtPropertyEvent){
+            gui->addBoardMessage("Player " + boughtPropertyEvent->player.getName() + " bought " + boughtPropertyEvent->tile.getName());
+            gui->updatePlayerDetails(boughtPropertyEvent->player);
+        }
+        break;
+    }
     case EventType::PlayerBoughtHouse:
     case EventType::PlayerBoughtHotel:
     case EventType::PlayerPaidBail:
@@ -135,7 +159,12 @@ void GameController::onNotify(const Event &event) {
     case EventType::PlayerWon:
     case EventType::PlayerLost:
     case EventType::PlayerTurnStart:
-    case EventType::PlayerTurnEnd:
+    case EventType::PlayerTurnEnd: {
+        const PlayerTurnEndEvent* turnEndEvent = dynamic_cast<const PlayerTurnEndEvent*>(&event);
+        if (turnEndEvent){
+            gui->addBoardMessage("Player " + turnEndEvent->player.getName() + " ended their turn");
+        }
+    }
         break;
     }
 }

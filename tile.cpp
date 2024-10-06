@@ -1,8 +1,9 @@
 #include "tile.h"
+#include "monopoly.h"
 
-Tile::Tile(Monopoly *game,size_t id, const std::string &name, const std::string &type, const std::string &details) : id(id), name(name), type(type), details(details) {};
+Tile::Tile(size_t id, const std::string &name, const std::string &type, const std::string &details) : id(id), name(name), type(type), details(details) {};
 
-Buyable::Buyable(Monopoly *game, size_t id, const std::string &name, const std::string &type, const std::string &details, int price) : Tile(game, id, name, type, details), price(price) ,owner(nullptr){};
+Buyable::Buyable(size_t id, const std::string &name, const std::string &type, const std::string &details, int price) : Tile(id, name, type, details), price(price), owner(nullptr) {};
 
 int Buyable::getPrice() const
 {
@@ -14,10 +15,10 @@ Player *Buyable::getOwner() const
     return owner;
 }
 
-Property::Property(Monopoly *game, size_t id, const std::string &name, const std::string &type, const std::string &details, int group, int price, int rent, int houseRent,int hotelRent, int houseCost) : Buyable(game, id, name, type, details, price), group(group), rent(rent), houseRent(houseRent), hotelRent(hotelRent), houseCost(houseCost) {
-    this->details = "Group: " + std::to_string(group) + "\n" + "Rent: " + std::to_string(rent) + "\n"+ "House Cost: " + std::to_string(houseCost) + "\n" + "Hotel Cost: " + std::to_string(houseCost*4+100) + "\n" + "Rent with 1 House: " + std::to_string(houseRent) + "\n" + "Rent with 2 Houses: " + std::to_string(houseRent*2) + "\n" + "Rent with 3 Houses: " + std::to_string(houseRent*4) + "\n" + "Rent with 4 Houses: " + std::to_string(houseRent*8) + "\n" + "Rent with Hotel: " + std::to_string(hotelRent);
+Property::Property(size_t id, const std::string &name, const std::string &type, const std::string &details, int group, int price, int rent, int houseRent, int hotelRent, int houseCost) : Buyable(id, name, type, details, price), group(group), rent(rent), houseRent(houseRent), hotelRent(hotelRent), houseCost(houseCost)
+{
+    this->details = "Group: " + std::to_string(group) + "\n" + "Rent: " + std::to_string(rent) + "\n" + "House Cost: " + std::to_string(houseCost) + "\n" + "Hotel Cost: " + std::to_string(houseCost * 4 + 100) + "\n" + "Rent with 1 House: " + std::to_string(houseRent) + "\n" + "Rent with 2 Houses: " + std::to_string(houseRent * 2) + "\n" + "Rent with 3 Houses: " + std::to_string(houseRent * 4) + "\n" + "Rent with 4 Houses: " + std::to_string(houseRent * 8) + "\n" + "Rent with Hotel: " + std::to_string(hotelRent);
 };
-
 
 int Property::getRent() const
 {
@@ -34,61 +35,107 @@ bool Property::hasHotel() const
     return hotel;
 }
 
-int Property::getGroup() const{
+int Property::getGroup() const
+{
     return group;
 };
 
-void Property::landOn(Monopoly &game,Player *player)
-{}
+void Property::landOn(Monopoly &game, Player *player)
+{
+    if (owner == nullptr || owner == player)
+    {
+        return;
+    }
+    else
+    {
+        game.payPlayer(*player, *owner, rent);
+    }
+}
 
-Go::Go(Monopoly *game, size_t id, const std::string &name, const std::string &type, const std::string &details) : Tile(game, id, name, type, details) {};
+void Property::addHouse()
+{
+    houses++;
+    if (houses == 1)
+    {
+        rent = houseRent;
+    }
+    else
+    {
+        rent = rent * 2;
+    }
+}
 
-void Go::landOn(Monopoly &game,Player *player)
-{}
+void Property::addHotel()
+{
+    hotel = true;
+    rent = hotelRent;
+}
 
-Jail::Jail(Monopoly *game, size_t id, const std::string &name, const std::string &type, const std::string &details) : Tile(game, id, name, type, details) {};
+int Property::getHouseCost() const{
+    return houseCost;
+}
 
-void Jail::landOn(Monopoly &game,Player *player)
-{}
+Go::Go(size_t id, const std::string &name, const std::string &type, const std::string &details) : Tile(id, name, type, details) {};
 
-FreeParking::FreeParking(Monopoly *game, size_t id, const std::string &name, const std::string &type, const std::string &details) : Tile(game, id, name, type, details) {};
+void Go::landOn(Monopoly &game, Player *player)
+{
 
-void FreeParking::landOn(Monopoly &game,Player *player)
-{}
+}
 
-GoToJail::GoToJail(Monopoly *game, size_t id, const std::string &name, const std::string &type, const std::string &details) : Tile(game, id, name, type, details) {};
+Jail::Jail(size_t id, const std::string &name, const std::string &type, const std::string &details) : Tile(id, name, type, details) {};
 
-void GoToJail::landOn(Monopoly &game,Player *player)
-{}
+void Jail::landOn(Monopoly &game, Player *player)
+{
+    // nothing happens
+}
 
-Chance::Chance(Monopoly *game, size_t id, const std::string &name, const std::string &type, const std::string &details) : Tile(game, id, name, type, details) {};
+FreeParking::FreeParking(size_t id, const std::string &name, const std::string &type, const std::string &details) : Tile(id, name, type, details) {};
 
-void Chance::landOn(Monopoly &game,Player *player)
-{}
+void FreeParking::landOn(Monopoly &game, Player *player)
+{
+    game.endTurn(*player);
+}
 
-CommunityChest::CommunityChest(Monopoly *game, size_t id, const std::string &name, const std::string &type, const std::string &details) : Tile(game, id, name, type, details) {};
+GoToJail::GoToJail(size_t id, const std::string &name, const std::string &type, const std::string &details) : Tile(id, name, type, details) {};
 
-void CommunityChest::landOn(Monopoly &game,Player *player)
-{}
+void GoToJail::landOn(Monopoly &game, Player *player)
+{
+    game.moveToJail(*player);
+}
 
-Railroad::Railroad(Monopoly *game, size_t id, const std::string &name, const std::string &type, const std::string &details, int price, int rent) : Buyable(game, id, name, type, details, price), rent(rent) {};
+Chance::Chance(size_t id, const std::string &name, const std::string &type, const std::string &details) : Tile(id, name, type, details) {};
 
-void Railroad::landOn(Monopoly &game,Player *player)
-{}
+void Chance::landOn(Monopoly &game, Player *player)
+{
+    // game.drawChanceCard(player); need to uncomment when done checking
+}
 
-Utility::Utility(Monopoly *game, size_t id, const std::string &name, const std::string &type, const std::string &details, int price) : Buyable(game, id, name, type, details, price) {};
+CommunityChest::CommunityChest(size_t id, const std::string &name, const std::string &type, const std::string &details) : Tile(id, name, type, details) {};
 
-void Utility::landOn(Monopoly &game,Player *player)
-{}
+void CommunityChest::landOn(Monopoly &game, Player *player)
+{
+}
 
-IncomeTax::IncomeTax(Monopoly *game, size_t id, const std::string &name, const std::string &type, const std::string &details, int tax) : Tile(game, id, name, type, details), tax(tax) {};
+Railroad::Railroad(size_t id, const std::string &name, const std::string &type, const std::string &details, int price, int rent) : Buyable(id, name, type, details, price), rent(rent) {};
 
-void IncomeTax::landOn(Monopoly &game,Player *player)
-{}
+void Railroad::landOn(Monopoly &game, Player *player)
+{
+}
 
-LuxuryTax::LuxuryTax(Monopoly *game, size_t id, const std::string &name, const std::string &type, const std::string &details, int tax) : Tile(game, id, name, type, details), tax(tax) {};
+Utility::Utility(size_t id, const std::string &name, const std::string &type, const std::string &details, int price) : Buyable(id, name, type, details, price) {};
 
-void LuxuryTax::landOn(Monopoly &game,Player *player)
-{}
+void Utility::landOn(Monopoly &game, Player *player)
+{
+}
 
+IncomeTax::IncomeTax(size_t id, const std::string &name, const std::string &type, const std::string &details, int tax) : Tile(id, name, type, details), tax(tax) {};
 
+void IncomeTax::landOn(Monopoly &game, Player *player)
+{
+}
+
+LuxuryTax::LuxuryTax(size_t id, const std::string &name, const std::string &type, const std::string &details, int tax) : Tile(id, name, type, details), tax(tax) {};
+
+void LuxuryTax::landOn(Monopoly &game, Player *player)
+{
+}

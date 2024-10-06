@@ -15,6 +15,8 @@ class GameController; // Forward declaration of GameController class
 #define MAX_HOUSES 4
 #define MAX_HOTELS 1
 #define MAX_DOUBLES 3
+#define JAIL_BAIL 50
+#define HOTEL_ADDITION 100
 
 class Monopoly
 {
@@ -23,12 +25,15 @@ private:
     std::vector<GameObserver *> observers;        // Vector of observers
     std::vector<Player> players;              // Vector of players
     std::vector<std::unique_ptr<Tile>> board; // Vector of tiles
+    std::map<size_t, std::vector<Property *>> properties_groups;  // Map of properties
     Player *currentPlayer;
+    Player *winner;
 
     // helper variables
     size_t jailIndex = 0;
     size_t goIndex = 0;
     bool isGameStarted = false;
+    bool gameEnded = false;
     bool hasPlayerRolled = false;
     bool hasPlayerRolledDoubles = false;
     int doublesCount = 0;
@@ -36,14 +41,14 @@ private:
     void notify(const Event &event); // Notify all observers of an event
     void setBoard(std::vector<Tile *> board); // Set the board
     void setBoard(const json &board);         // Set the board from JSON
-    void movePlayer(Player &player, int spaces);
-    void nextPlayer();
+
     void checkPlayerTurn(const Player &player);
     void checkPlayerCanRoll(const Player &player);
     void checkPlayerRolled(const Player &player);
-    void moveToJail(Player &player);
     void notifyObservers(const Event& event);
     Tile *getModifiableTile(const Tile *tile);
+
+
 
     // helper functions
 
@@ -78,6 +83,14 @@ public:
     const Player &getPlayerByName(const std::string &name);
     const Player &addPlayer(const std::string &name); // Add a player
     
+    // inner logic functions to let tile do operations under the game manager.
+    void payPlayer(Player &player, Player &owner, int amount);
+    void payBank(Player &player, int amount);
+    void movePlayer(Player &player, int spaces);
+    void nextPlayer();
+    void moveToJail(Player &player);
+    void moveOutOfJail(Player &player);
+
     std::vector<const Tile *> getBoard() const;
     std::vector<const Player *> getPlayers() const;
     

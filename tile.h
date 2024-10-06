@@ -9,13 +9,13 @@ class Monopoly; // forward declaration.
 class Tile
 {
 public:
-    Tile(Monopoly *game, size_t id, const std::string &name, const std::string &type, const std::string &details);
+    Tile(size_t id, const std::string &name, const std::string &type, const std::string &details);
 
     size_t getId() const { return id; }
     const std::string &getName() const { return name; }
     const std::string &getType() const { return type; }
     const std::string &getDetails() const { return details; }
-    virtual void landOn(Monopoly &game,Player *player) = 0;
+    virtual void landOn(Monopoly &game, Player *player) = 0;
 
 protected:
     Monopoly *game;
@@ -30,11 +30,11 @@ protected:
 class Buyable : public Tile
 {
 public:
-    Buyable(Monopoly *game, size_t id, const std::string &name, const std::string &type, const std::string &details, int price);
+    Buyable(size_t id, const std::string &name, const std::string &type, const std::string &details, int price);
 
     int getPrice() const;
     Player *getOwner() const;
-    virtual void landOn(Monopoly &game,Player *player) = 0;
+    virtual void landOn(Monopoly &game, Player *player) = 0;
 
 protected:
     int price;
@@ -48,7 +48,7 @@ protected:
 class Property : public Buyable
 {
 public:
-    Property(Monopoly *game, size_t id, const std::string &name, const std::string &type, const std::string &details, int group, int price, int rent, int houseRent,int hotelRent, int houseCost);
+    Property(size_t id, const std::string &name, const std::string &type, const std::string &details, int group, int price, int rent, int houseRent, int hotelRent, int houseCost);
     int getRent() const;
     int getGroup() const;
     int getHouses() const;
@@ -56,8 +56,7 @@ public:
     int getHotelRent() const;
     int getHouseCost() const;
     bool hasHotel() const;
-    void landOn(Monopoly &game,Player *player) override;
-
+    void landOn(Monopoly &game, Player *player) override;
 
 protected:
     int group;
@@ -69,107 +68,112 @@ protected:
     bool hotel;
 
     void setOwner(Player *owner) { this->owner = owner; }
-
+    void addHouse();
+    void addHotel();
+        
     friend class Monopoly;
 };
 
 class Go : public Tile
 {
 public:
-    Go(Monopoly *game, size_t id, const std::string &name, const std::string &type, const std::string &details);
+    Go(size_t id, const std::string &name, const std::string &type, const std::string &details);
 
-    protected:
-        void landOn(Monopoly &game,Player *player) override;
+protected:
+    void landOn(Monopoly &game, Player *player) override;
 };
 
 class Jail : public Tile
 {
 public:
-    Jail(Monopoly *game, size_t id, const std::string &name, const std::string &type, const std::string &details);
+    Jail(size_t id, const std::string &name, const std::string &type, const std::string &details);
 
 protected:
-    void landOn(Monopoly &game,Player *player) override;
+    void landOn(Monopoly &game, Player *player) override;
 };
 
 class FreeParking : public Tile
 {
 public:
-    FreeParking(Monopoly *game, size_t id, const std::string &name, const std::string &type, const std::string &details);
+    FreeParking(size_t id, const std::string &name, const std::string &type, const std::string &details);
 
 protected:
-    void landOn(Monopoly &game,Player *player) override;
+    void landOn(Monopoly &game, Player *player) override;
 };
 
 class GoToJail : public Tile
 {
 public:
-    GoToJail(Monopoly *game, size_t id, const std::string &name, const std::string &type, const std::string &details);
-    protected:
-        void landOn(Monopoly &game,Player *player) override;
-    };
+    GoToJail(size_t id, const std::string &name, const std::string &type, const std::string &details);
+
+protected:
+    void landOn(Monopoly &game, Player *player) override;
+};
 
 class IncomeTax : public Tile
 {
-    private:
-        int tax;
+private:
+    int tax;
 
-    protected:
-        void landOn(Monopoly &game,Player *player) override;
+protected:
+    void landOn(Monopoly &game, Player *player) override;
+
 public:
-    IncomeTax(Monopoly *game, size_t id, const std::string &name, const std::string &type, const std::string &details, int tax);
+    IncomeTax(size_t id, const std::string &name, const std::string &type, const std::string &details, int tax);
     int getTax() const;
 };
 
 class LuxuryTax : public Tile
 {
-    private:
-        int tax;
+private:
+    int tax;
 
-    protected:
-        void landOn(Monopoly &game,Player *player) override;
+protected:
+    void landOn(Monopoly &game, Player *player) override;
+
 public:
-    LuxuryTax(Monopoly *game, size_t id, const std::string &name, const std::string &type, const std::string &details, int tax);
+    LuxuryTax(size_t id, const std::string &name, const std::string &type, const std::string &details, int tax);
 
     int getTax() const;
 };
 
 class Railroad : public Buyable
 {
-    
-    public:
-        Railroad(Monopoly *game, size_t id, const std::string &name, const std::string &type, const std::string &details, int price, int rent);
-        int getRent() const;
 
-    protected:
-        int rent;
-        void landOn(Monopoly &game,Player *player) override;
+public:
+    Railroad(size_t id, const std::string &name, const std::string &type, const std::string &details, int price, int rent);
+    int getRent() const;
+
+protected:
+    int rent;
+    void landOn(Monopoly &game, Player *player) override;
 };
 
 class Utility : public Buyable
 {
-    public:
-        Utility(Monopoly *game, size_t id, const std::string &name, const std::string &type, const std::string &details, int price);
-    protected:
-        void landOn(Monopoly &game,Player *player) override;
+public:
+    Utility(size_t id, const std::string &name, const std::string &type, const std::string &details, int price);
 
+protected:
+    void landOn(Monopoly &game, Player *player) override;
 };
 
 class CommunityChest : public Tile
 {
-    protected:
-        void landOn(Monopoly &game,Player *player) override;
+protected:
+    void landOn(Monopoly &game, Player *player) override;
+
 public:
-    CommunityChest(Monopoly *game, size_t id, const std::string &name, const std::string &type, const std::string &details);
+    CommunityChest(size_t id, const std::string &name, const std::string &type, const std::string &details);
 };
 
 class Chance : public Tile
 {
-    protected:
-        void landOn(Monopoly &game,Player *player) override;
+protected:
+    void landOn(Monopoly &game, Player *player) override;
+
 public:
-    Chance(Monopoly *game, size_t id, const std::string &name, const std::string &type, const std::string &details);
+    Chance(size_t id, const std::string &name, const std::string &type, const std::string &details);
 };
-
-
 
 #endif // TILE_H

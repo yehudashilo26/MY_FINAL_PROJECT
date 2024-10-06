@@ -12,6 +12,7 @@
         <file>res/free_parking.png</file>
         <file>res/property.png</file>
         <file>res/go.png</file>
+        <file>res/tax.png</file>
     </qresource>
     <qresource prefix="/players_tokens">
         <file>res/Token1.jpg</file>

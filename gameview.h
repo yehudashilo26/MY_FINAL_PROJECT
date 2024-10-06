@@ -56,6 +56,7 @@ private:
     void updatePlayerPosition(const Player &player);
     void setCurrentPlayer(Player * const &player);
     void updatePlayersDetails();
+    void updatePlayerDetails(const Player &player);
     void updateCurrentPlayer();
     const Player &getCurrentPlayer() const;
     // Slot to quit the game and exit the application

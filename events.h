@@ -15,6 +15,7 @@ enum class EventType
     PlayerBoughtProperty,
     PlayerBoughtHouse,
     PlayerBoughtHotel,
+    PlayerPaidRent,
     PlayerPaidBail,
     PlayerBankrupt,
     PlayerWon,
@@ -42,6 +43,17 @@ class PlayerPositionChangedEvent : public Event
         EventType getType() const override { return EventType::PlayerPositionChanged; };
         const Player &player;
         const Tile &tile;
+};
+
+class PlayerPaidRentEvent : public Event
+{
+    public:
+        PlayerPaidRentEvent(const Player &player, const Player &owner, int amount) : player(player), owner(owner), amount(amount) {};
+        std::string toString() const override { return "PlayerPaidRentEvent"; };
+        EventType getType() const override { return EventType::PlayerPaidRent; };
+        const Player &player;
+        const Player &owner;
+        int amount;
 };
 
 class PlayerIsInJailEvent : public Event
@@ -76,10 +88,12 @@ class PlayerRolledDiceEvent : public Event
 class PlayerRolledDoublesEvent : public Event
 {
     public:
-        PlayerRolledDoublesEvent(const Player &player) : player(player) {};
+        PlayerRolledDoublesEvent(const Player &player, int dice1, int dice2) : player(player), dice1(dice1), dice2(dice2) {};
         std::string toString() const override { return "PlayerRolledDoublesEvent"; };
         EventType getType() const override { return EventType::PlayerRolledDoubles; };
         const Player &player;
+        int dice1;
+        int dice2;
 };
 
 class PlayerBoughtPropertyEvent : public Event
@@ -124,10 +138,11 @@ class PlayerPaidBailEvent : public Event
 class PlayerBankruptEvent : public Event
 {
     public:
-        PlayerBankruptEvent(const Player &player) : player(player) {};
+        PlayerBankruptEvent(const Player &player,const Player *paid_to=nullptr) : player(player), paid_to(paid_to) {};
         std::string toString() const override { return "PlayerBankruptEvent"; };
         EventType getType() const override { return EventType::PlayerBankrupt; };
         const Player &player;
+        const Player *paid_to;
 };
 
 class PlayerWonEvent : public Event

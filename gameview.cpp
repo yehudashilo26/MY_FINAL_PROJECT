@@ -209,6 +209,16 @@ void GameView::setCurrentPlayer(Player *const &player) {
 
 void GameView::addBoardMessage(const std::string &message) {
     message_board->setText(message_board->toPlainText() + QString::fromStdString(message) + "\n");
+    message_board->moveCursor(QTextCursor::End);
+}
+
+void GameView::updatePlayerDetails(const Player &player) {
+    for (size_t i = 0; i < players.size(); i++) {
+        if (players[i]->getID() == player.getID()) {
+            players_widgets[i]->update_details();
+            updatePlayerPosition(*players[i]);
+        }
+    }
 }
 
 void GameView::updatePlayersDetails() {

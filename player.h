@@ -16,6 +16,7 @@ public:
     int getPosition() const { return position; }
     bool isInJail() const { return inJail; }
     int getTurnsInJail() const { return turnsInJail; }
+    bool isBankrupt() const { return balance<0; }
 
     friend class Monopoly;
 
@@ -25,7 +26,6 @@ private:
     int balance;
     int position;
     bool inJail;
-    bool isBankrupt;
     int turnsInJail;
 
     void setName(const std::string &name);

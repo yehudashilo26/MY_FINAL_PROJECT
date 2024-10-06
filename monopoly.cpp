@@ -8,9 +8,7 @@
 #include <stdexcept>
 #include <iostream>
 
-#define MAX_PLAYERS 8
 Monopoly *Monopoly::instance = nullptr;
-
 
 void Monopoly::addObserver(GameObserver *observer)
 {
@@ -31,7 +29,7 @@ void Monopoly::nextPlayer()
     do
     {
         currentPlayer = &players[(currentPlayer->getID()) % players.size()];
-    } while (currentPlayer->isBankrupt);
+    } while (currentPlayer->isBankrupt());
 }
 
 Monopoly::Monopoly()
@@ -82,7 +80,7 @@ void Monopoly::setBoard(const json &j)
         try
         {
             // Assuming TileFactory::createTile takes JSON data and returns a std::unique_ptr<Tile>
-            std::unique_ptr<Tile> newTile = TileFactory::createTile(this, tile_data);
+            std::unique_ptr<Tile> newTile = TileFactory::createTile(tile_data);
 
             if (!newTile)
             {
@@ -98,6 +96,15 @@ void Monopoly::setBoard(const json &j)
             if (newTile->getType() == "Go")
             {
                 goIndex = id;
+            }
+
+            if (newTile->getType() == "Property")
+            {
+                Property *property = dynamic_cast<Property *>(newTile.get());
+                if (property)
+                {
+                    properties_groups[property->getGroup()].push_back(property);
+                }
             }
 
             if (id < 1 || id > BOARD_SIZE)
@@ -141,7 +148,8 @@ const Player &Monopoly::getCurrentPlayer()
     return *currentPlayer;
 }
 
-Player *const& Monopoly::getCurrentPlayerPtr(){
+Player *const &Monopoly::getCurrentPlayerPtr()
+{
     return currentPlayer;
 };
 
@@ -170,7 +178,7 @@ const Player &Monopoly::addPlayer(const std::string &name)
         }
     }
 
-    players.emplace_back(name, players.size()+1, START_BALANCE);// to make sure the object is the same
+    players.emplace_back(name, players.size() + 1, START_BALANCE); // to make sure the object is the same
     return players.back();
 }
 // void Monopoly::startGame()
@@ -179,7 +187,7 @@ Tile *Monopoly::getModifiableTile(const Tile *tile)
 {
     try
     {
-        int id = tile->getId()-1;                    // comparing by tile id
+        int id = tile->getId() - 1;                // comparing by tile id
         Tile *modifiableTile = board.at(id).get(); // get the tile pointer from the unique_ptr
 
         // Check if the modifiable tile pointer is the same as the const tile pointer
@@ -200,8 +208,9 @@ Tile *Monopoly::getModifiableTile(const Tile *tile)
 
 const Tile *Monopoly::getPlayerTile(const Player &player) const
 {
-    size_t playerId = player.getID()-1;
-    try{
+    size_t playerId = player.getID() - 1;
+    try
+    {
         if (&players[playerId] == &player)
         {
             return board[players[playerId].getPosition()].get();
@@ -210,7 +219,7 @@ const Tile *Monopoly::getPlayerTile(const Player &player) const
         {
             throw std::runtime_error("Player not found");
         }
-        }
+    }
     catch (const std::out_of_range &e)
     {
         throw std::runtime_error("Player not found: Index out of range");
@@ -253,12 +262,12 @@ void Monopoly::RollDice(const Player &player)
     int dice2 = std::rand() % 6 + 1; // Roll the dice (1-6)
 
     int total = dice1 + dice2;
-    std::cout<<"Rolled " << dice1 << "," << dice2 << std::endl;
+    std::cout << "Rolled " << dice1 << "," << dice2 << std::endl;
 
     hasPlayerRolled = true;
     if (dice1 == dice2)
-    {            
-        notify(PlayerRolledDoublesEvent(player));
+    {
+        notify(PlayerRolledDoublesEvent(player, dice1, dice2));
         doublesCount++;
         if (currentPlayer->isInJail())
         {
@@ -277,20 +286,16 @@ void Monopoly::RollDice(const Player &player)
         else
         {
             hasPlayerRolledDoubles = true;
-            doublesCount++;
         }
     }
-    else{
-        notify(PlayerRolledDiceEvent(*currentPlayer,dice1,dice2));
-    hasPlayerRolledDoubles=false;
-    doublesCount = 0;
+    else
+    {
+        notify(PlayerRolledDiceEvent(*currentPlayer, dice1, dice2));
+        hasPlayerRolledDoubles = false;
+        doublesCount = 0;
     }
-    movePlayer(*currentPlayer,total);
-
-
-    // Move the player
-
-
+    movePlayer(*currentPlayer, total);
+    board[currentPlayer->getPosition()]->landOn(*this, currentPlayer);
 }
 
 void Monopoly::moveToJail(Player &player)
@@ -305,7 +310,6 @@ void Monopoly::moveToJail(Player &player)
     notifyObservers(PlayerIsInJailEvent(player));
 }
 
-
 void Monopoly::checkPlayerTurn(const Player &player)
 {
     if (!isGameStarted)
@@ -313,12 +317,17 @@ void Monopoly::checkPlayerTurn(const Player &player)
         throw std::runtime_error("Game not started");
     }
 
+    if (gameEnded)
+    {
+        throw std::runtime_error("Game has ended the winner is " + winner->getName());
+    }
+
     if (&player != currentPlayer)
     {
         throw std::runtime_error("Not the current player's turn");
     }
 
-    if (player.isBankrupt)
+    if (player.isBankrupt())
     {
         throw std::runtime_error("Player is bankrupt");
     }
@@ -327,7 +336,6 @@ void Monopoly::checkPlayerTurn(const Player &player)
     {
         throw std::runtime_error("Player has been in jail for 3 turns must pay bail or use chance card");
     }
-    
 }
 
 void Monopoly::checkPlayerCanRoll(const Player &player)
@@ -336,7 +344,6 @@ void Monopoly::checkPlayerCanRoll(const Player &player)
     {
         throw std::runtime_error("Player has already rolled the dice");
     }
-
 }
 
 void Monopoly::checkPlayerRolled(const Player &player)
@@ -401,17 +408,128 @@ void Monopoly::buyProperty(const Player &player, const Tile &tile)
     {
         throw std::runtime_error("Tile is not buyable");
     }
-
 };
 
 void Monopoly::buyHouse(const Player &player, const Tile &tile)
-{};
+{
+    checkPlayerTurn(player);
+    checkPlayerRolled(player);
+
+    if (Property *property = dynamic_cast<Property *>(getModifiableTile(&tile)))
+    {
+        if (property->getOwner() != currentPlayer)
+        {
+            throw std::runtime_error("Player does not own this property");
+        }
+
+        for (const auto &group : properties_groups[property->getGroup()])
+        {
+            if (group->getOwner() != currentPlayer)
+            {
+                throw std::runtime_error("Player does not own all properties in the group");
+            }
+
+            if (group->getHouses() < property->getHouses())
+            {
+                throw std::runtime_error("Player must build houses evenly");
+            }
+        }
+
+        if (property->getHouses() >= MAX_HOUSES)
+        {
+            throw std::runtime_error("Maximum number of houses reached");
+        }
+
+        if (currentPlayer->getBalance() < property->getHouseCost())
+        {
+            throw std::runtime_error("Insufficient funds to buy house");
+        }
+
+        currentPlayer->subtractFromBalance(property->getHouseCost());
+        property->addHouse();
+        notify(PlayerBoughtHouseEvent(player, tile));
+    }
+
+    else
+    {
+        throw std::runtime_error("Tile is not a property");
+    }
+};
 
 void Monopoly::buyHotel(const Player &player, const Tile &tile)
-{};
+{
+    checkPlayerTurn(player);
+    checkPlayerRolled(player);
+
+    if (Property *property = dynamic_cast<Property *>(getModifiableTile(&tile)))
+    {
+        if (property->getOwner() != currentPlayer)
+        {
+            throw std::runtime_error("Player does not own this property");
+        }
+
+        for (const auto &group : properties_groups[property->getGroup()])
+        {
+            if (group->getOwner() != currentPlayer)
+            {
+                throw std::runtime_error("Player does not own all properties in the group");
+            }
+
+            if (group->getHouses() < property->getHouses())
+            {
+                throw std::runtime_error("Player must build houses evenly");
+            }
+        }
+
+        if (property->getHouses() < MAX_HOUSES)
+        {
+            throw std::runtime_error("Player must build 4 houses before buying a hotel");
+        }
+
+        if (property->hasHotel())
+        {
+            throw std::runtime_error("Hotel already built on this property");
+        }
+
+        int hotelcost = property->getHouseCost() * MAX_HOUSES + HOTEL_ADDITION;
+        if (currentPlayer->getBalance() < hotelcost)
+        {
+            throw std::runtime_error("Insufficient funds to buy hotel");
+        }
+
+        currentPlayer->subtractFromBalance(hotelcost);
+        property->addHotel();
+        notify(PlayerBoughtHotelEvent(player, tile));
+    }
+
+    else
+    {
+        throw std::runtime_error("Tile is not a property");
+    }
+};
 
 void Monopoly::payBail(const Player &player)
-{};
+{
+    checkPlayerTurn(player);
+
+    if (!player.isInJail())
+    {
+        throw std::runtime_error("Player is not in jail");
+    }
+
+    else if (player.getBalance() < JAIL_BAIL)
+    {
+        if (player.getTurnsInJail() == 3)
+        {
+            // handle the case where the player has been in jail for 3 turns and has no money to pay bail should be bankrupt
+            currentPlayer->subtractFromBalance(JAIL_BAIL);
+            notify(PlayerBankruptEvent(player));
+            return;
+        }
+
+        throw std::runtime_error("Insufficient funds to pay bail");
+    }
+};
 
 void Monopoly::movePlayer(Player &player, int spaces)
 {
@@ -423,8 +541,45 @@ void Monopoly::movePlayer(Player &player, int spaces)
     }
 
     player.setPosition(newPosition);
-    board[newPosition]->landOn(*this,&player);
-    // notify(PlayerMovedEvent(player, spaces));
-    return;
     // notify(PlayerMovedEvent(player, spaces));
 }
+
+void Monopoly::payPlayer(Player &player, Player &owner, int amount)
+{
+    player.subtractFromBalance(amount);
+    owner.addToBalance(amount);
+
+    if (player.isBankrupt())
+    {
+        notify(PlayerBankruptEvent(player, &owner));
+
+        for (auto &tile : board)
+        {
+            if (Buyable *buyable = dynamic_cast<Buyable *>(tile.get()))
+            {
+                if (buyable->getOwner() == &player)
+                {
+                    buyable->setOwner(&owner);
+                }
+            }
+        }
+    }
+
+    notify(PlayerPaidRentEvent(player, owner, amount));
+
+    if (owner.getBalance() > 4000)
+    {
+        gameEnded = true;
+        winner = &owner;
+        notify(PlayerWonEvent(owner));
+    }
+}
+
+
+void Monopoly::moveOutOfJail(Player &player)
+{
+    player.setInJail(false);
+    player.setTurnsInJail(0);
+    notify(PlayerIsOutOfJailEvent(player));
+}
+
